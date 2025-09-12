@@ -34,5 +34,32 @@ dicionario = {
     "teste": "teste"
 }
 
-for item in dicionario:
-    print(f"{item}: {dicionario[item]}")
+planinha = {
+            "customerId": [1, 3, 3],
+            "attribute": "joke",
+            "attributeValue": "hahaha"
+        }
+
+i = 0
+number_range = 2
+body = {
+            "interaction": {
+                "name": "Teste Campanha Server-Side"
+                    },
+                    "source": {
+                        "channel": "Server",
+                        "application": "Campaign Test"
+                    },
+                    "user": {
+                        "identities":  {
+                        "userId": "_"
+                        },
+                        "attributes": {
+                            planinha["attribute"]: planinha["attributeValue"]
+                        }
+                    }
+               }
+for i in range(5):
+    body["user"]["identities"]["userId"] = i
+    print(body["user"]["identities"]["userId"])
+    print(body["user"]["attributes"]["joke"])

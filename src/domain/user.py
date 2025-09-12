@@ -15,40 +15,39 @@ class UserDomain:
         base64_string = base.decode('utf-8')
         return base64_string
 
-    def request_mcp(self):
-        planinha = dadosPlanilha() #criar essa funcao
-        customersId = []
-        for item in planinha:
-            customersId.append(planinha[item])
-
-        header = {"Authorization":self.code}
+    def request_mcp(self, number_range=1):
+        planinha = {
+            "customerId": ['506679b17b6e5e28cadb3d93', '4e6679b17b6e5e28cadb3d93', 	'4f6679b17b6e5e28cadb3d93'],
+            "attribute": "joke",
+            "attributeValue": "hahaha"
+        }
         body = {
             "interaction": {
                 "name": "Teste Campanha Server-Side"
-                },
-                "source": {
-                    "channel": "Server",
-                    "application": "Campaign Test"
-                },
-                "user": {
-                    "identities":  {
-                    "userId": customerId
                     },
-                    "attributes": {
-                        attribute: attributeValue
+                    "source": {
+                        "channel": "Server",
+                        "application": "Campaign Test"
+                    },
+                    "user": {
+                        "identities":  {
+                        "userId": "_"
+                        },
+                        "attributes": {
+                            planinha["attribute"]: planinha["attributeValue"]
+                        }
                     }
-                }
-            }
-
-            
-
-    
-
-
+               }
+        header = {"Authorization":self.code}
+        i = 0
+        for i in range(number_range):
+            body["user"]["identities"]["userId"] = planinha["customerId"][i]
+            r = requests.post(self.url, json=body, headers=header)
+            return r.json()   
+          
     def to_dict(self):
         return {
             "url": self.url,
             "code": self.code
         }
-
 
