@@ -25,7 +25,7 @@ class Controller:
             return make_response(jsonify({"erro": f"Estão faltando os seguintes caracteres na URL: {missed_url_caractere}"}), 400)
 
         user = UserService.request_personalization(data["url"], data["apiToken"], data["apiSecret"])
-        return make_response(jsonify({"msg": "Deu certo"}), 200)
+        return make_response(jsonify({"msg": "Deu certo", "response": user}), 200)
 
         
 
