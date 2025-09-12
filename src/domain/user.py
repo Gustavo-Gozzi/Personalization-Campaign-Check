@@ -15,7 +15,7 @@ class UserDomain:
         base64_string = base.decode('utf-8')
         return base64_string
 
-    def request_mcp(self, number_range=1):
+    def request_mcp(self, number_range=3):
         planinha = {
             "customerId": ['506679b17b6e5e28cadb3d93', '4e6679b17b6e5e28cadb3d93', 	'4f6679b17b6e5e28cadb3d93'],
             "attribute": "joke",
@@ -40,10 +40,12 @@ class UserDomain:
                }
         header = {"Authorization":self.code}
         i = 0
+        users = []
         for i in range(number_range):
             body["user"]["identities"]["userId"] = planinha["customerId"][i]
             r = requests.post(self.url, json=body, headers=header)
-            return r.json()   
+            users.append(r.json())
+        return users   
           
     def to_dict(self):
         return {

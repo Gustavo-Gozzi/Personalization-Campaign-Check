@@ -3,7 +3,12 @@ from src.Application.Service.user_service import UserService
 class Controller:
     @staticmethod
     def getData():
-        data = request.get_json()
+        data = {
+            'url': '#######',
+            'apiToken': '#########',
+            'apiSecret': '###############'
+
+        }#request.get_json()
 
         required_data = ["url", "apiToken", "apiSecret"]
         missed_data = []
@@ -23,8 +28,9 @@ class Controller:
         if missed_url_caractere:    
             return make_response(jsonify({"erro": f"Estão faltando os seguintes caracteres na URL: {missed_url_caractere}"}), 400)
 
+        
         user = UserService.request_personalization(data["url"], data["apiToken"], data["apiSecret"])
-        return make_response(jsonify({"msg": "Deu certo", "response": user}), 200)
+        return {"msg": "Deu certo", "response": user}#make_response(jsonify({"msg": "Deu certo", "response": user}), 200)
 
         
 

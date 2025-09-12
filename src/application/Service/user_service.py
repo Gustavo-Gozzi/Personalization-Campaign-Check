@@ -1,4 +1,4 @@
-from domain.user import UserDomain
+from src.Domain.user import UserDomain
 
 class UserService:
     @staticmethod
@@ -6,19 +6,26 @@ class UserService:
         new_user = UserDomain(url, token, secret)
 
         response = new_user.request_mcp()
-        return data_validade(response)
+        return UserService.data_validade(response)
 
     @staticmethod
-    def data_validade(jason):
+    def data_validade(lista):
 
-        response = {}
+        response = []
+        for jason in lista:
+            if jason["campaignResponses"] and len(jason["campaignResponses"]) > 0:
+                campaign = jason["campaignResponses"][0]
+                experience_name = campaign["experienceName"]
+                user_name = jason['campaignResponses'][0]['payload']['Nome']
+                user_lastname = jason['campaignResponses'][0]['payload']['Sobrenome']
+                response.append(
+                    {
+                        "Nome": experience_name,
+                        "Sobrenome": user_lastname,
+                        "Experiencia": experience_name
+                    }
+                )
 
-        if jason["campaignResponses"] and len(jason["campaignResponses"]) > 0:
-            campaign = jason["campaignResponses"][0]
-            experience_name = campaign["experienceName"]
-            response["experiencie"] = experience_name
-
-        else: 
-            response["msg"] = 'Sem Experiencias'
-        
+            else: 
+                response["msg"] = 'Sem Experiencias'
         return response
