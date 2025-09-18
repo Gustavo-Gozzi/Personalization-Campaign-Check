@@ -2,11 +2,13 @@ import base64
 import requests
 
 class UserDomain:
-    def __init__(self, url, APItoken, APIsecret):
+    def __init__(self, url, APItoken, APIsecret, customer, expectedKeys):
         self.url = url
         self.APIToken = APItoken
         self.APIsecret = APIsecret
         self.code = f'Basic {self.encodeBasic()}'
+        self.customer = customer
+        self.expectedKeys = expectedKeys
 
     def encodeBasic(self):
         credentials = f'{self.APIToken}:{self.APIsecret}'
@@ -16,33 +18,26 @@ class UserDomain:
         return base64_string
 
     def request_mcp(self, number_range=3):
-        planinha = {
-            "customerId": ['506679b17b6e5e28cadb3d93', '4e6679b17b6e5e28cadb3d93', 	'4f6679b17b6e5e28cadb3d93'],
-            "attribute": "joke",
-            "attributeValue": "hahaha"
-        }
-        body = {
-            "interaction": {
-                "name": "Teste Campanha Server-Side"
-                    },
-                    "source": {
-                        "channel": "Server",
-                        "application": "Campaign Test"
-                    },
-                    "user": {
-                        "identities":  {
-                        "userId": "_"
-                        },
-                        "attributes": {
-                            planinha["attribute"]: planinha["attributeValue"]
-                        }
-                    }
-               }
+        print(self.customer)
         header = {"Authorization":self.code}
         i = 0
         users = []
-        for i in range(number_range):
-            body["user"]["identities"]["userId"] = planinha["customerId"][i]
+        for num in self.customer:
+            body = {
+                "interaction": {
+                "name": "Teste Campanha Server-Side"
+                },
+                "source": {
+                    "channel": "Server",
+                    "application": "Campaign Test"
+                    },
+                    "user": {
+                        "identities":  {
+                            "userId": self.customer[0]['customerId']
+                            },
+                            "attributes": self.customer[0]['atributos']
+                        }
+                }
             r = requests.post(self.url, json=body, headers=header)
             users.append(r.json())
         return users   

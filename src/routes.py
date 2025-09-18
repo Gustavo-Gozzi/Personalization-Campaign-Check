@@ -4,7 +4,7 @@ from flask import jsonify, make_response
 def teste():
     return Controller.getData()
 
-def validation_routes(app):
+def register_routes(app):
     @app.route('/mcp/campaign', methods=['POST'])
     def validation():
         return Controller.getData()
